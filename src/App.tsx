@@ -1,8 +1,20 @@
-import { Link } from "react-router-dom";
 import "./styles/App.scss";
-import InputsOrdenDeCompra from "./components/InputsOrdenDeCompra";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 export default function App() {
+  const navigate = useNavigate();
+
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
+
+  const onSubmit = () => {
+    navigate("/productos");
+  };
+
   return (
     <>
       <main className="main orden-de-compra">
@@ -17,37 +29,44 @@ export default function App() {
             <p>Productos</p>
           </div>
         </section>
-        <form>
-          <InputsOrdenDeCompra
-            className="inputs date"
-            htmlFor="date"
-            description="Fecha:"
-            id="date"
-            name="Fecha"
-            type="date"
-          />
-          <InputsOrdenDeCompra
-            className="inputs name"
-            htmlFor="name"
-            description="Nombre del cliente:"
-            id="name"
-            name="Nombre del cliente"
-            type="text"
-          />
-
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="inputs date">
+            <label htmlFor="date">Fecha:</label>
+            <input
+              type="datetime-local"
+              {...register("date", {
+                required: true,
+              })}
+              id="date"
+            />
+          </div>
+          {errors.date?.type === "required" && <p>El campo es requerido.</p>}
+          <div className="inputs name">
+            <label htmlFor="name">Nombre del cliente</label>
+            <input
+              type="text"
+              {...register("name", {
+                required: true,
+                maxLength: 40,
+              })}
+              id="name"
+            />
+          </div>
+          {errors.name?.type === "required" && <p>El campo es requerido.</p>}
           <div className="inputs direction">
             <label htmlFor="direction">Dirección:</label>
             <textarea
+              {...register("direction", {
+                required: true,
+                maxLength: 300,
+              })}
               id="direction"
-              name="Dirección"
-              cols={40}
-              rows={10}
-              required
-            ></textarea>
+            />
           </div>
-          <Link to="/productos">
-            <input id="button" type="button" value="Siguiente" />
-          </Link>
+          {errors.direction?.type === "required" && (
+            <p>El campo es requerido.</p>
+          )}
+          <input type="submit" id="button" value="Siguiente" />
         </form>
       </main>
     </>
