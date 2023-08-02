@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
-import { 
-  Button, 
-  TableCell, 
-  TableRow, 
-  TextField, 
-  Select, 
+import {
+  Button,
+  TableCell,
+  TableRow,
+  TextField,
+  Select,
   MenuItem,
   InputLabel,
   FormControl,
   SelectChangeEvent,
 } from "@mui/material";
-import { useStore } from "../../Store";
+import { useOrderDetailStore, useOrderStore } from "../../stores";
 
 const products = [
   { label: "Camisa 1", value: 30 },
@@ -21,7 +21,7 @@ const products = [
   { label: "Zapato 1", value: 21 },
   { label: "Zapato 2", value: 15 },
   { label: "Zapato 3", value: 23 },
-]
+];
 
 export default function Row({ id }: { id: string }) {
   const [productName, setProductName] = useState<string>("");
@@ -29,12 +29,15 @@ export default function Row({ id }: { id: string }) {
   const [quantity, setQuantity] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
 
-  const { updateProduct } = useStore()
+  const { updateProduct, deleteProduct } = useOrderDetailStore();
+  const { id: orderId } = useOrderStore();
 
   const handleSelectProduct = (e: SelectChangeEvent) => {
     setProductName(e.target.value);
-    setProductPrice(products.find((product) => product.label === e.target.value)?.value || 0);
-  }
+    setProductPrice(
+      products.find((product) => product.label === e.target.value)?.value || 0
+    );
+  };
 
   useEffect(() => {
     setTotal(productPrice * quantity);
@@ -43,7 +46,8 @@ export default function Row({ id }: { id: string }) {
   useEffect(() => {
     updateProduct({
       id,
-      name: productName,
+      orderId,
+      product: productName,
       price: productPrice,
       quantity,
       total,
@@ -53,20 +57,20 @@ export default function Row({ id }: { id: string }) {
   return (
     <TableRow>
       <TableCell>
-      <FormControl sx={{ m: 1, minWidth: 120 }}>
-      <InputLabel>Selecciona</InputLabel>
-        <Select
-          value={productName}
-          onChange={(e) => handleSelectProduct(e)}
-          label="Selecciona"
-        >
-          {products.map((product) => (
-            <MenuItem key={product.label} value={product.label}>
-              {product.label}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+        <FormControl sx={{ m: 1, minWidth: 120 }}>
+          <InputLabel>Selecciona</InputLabel>
+          <Select
+            value={productName}
+            onChange={(e) => handleSelectProduct(e)}
+            label="Selecciona"
+          >
+            {products.map((product) => (
+              <MenuItem key={product.label} value={product.label}>
+                {product.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </TableCell>
       <TableCell>
         <TextField
@@ -78,10 +82,14 @@ export default function Row({ id }: { id: string }) {
       <TableCell>${productPrice}</TableCell>
       <TableCell>${total}</TableCell>
       <TableCell>
-        <Button variant="contained" color="error">
+        <Button
+          variant="contained"
+          color="error"
+          onClick={() => deleteProduct(id)}
+        >
           Eliminar
         </Button>
       </TableCell>
     </TableRow>
-  )
+  );
 }

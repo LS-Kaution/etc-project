@@ -5,89 +5,96 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 2rem;
+  gap: 5rem;
 
-  h1 {
-    font-size: 3rem;
-  }
-
-  #status {
+  #ig-status {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10rem;
+    gap: 2rem;
 
-    #general {
+    .status.ig {
+      height: 5.5rem;
+      width: 16rem;
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
+      gap: 1rem;
     }
 
-    #articles {
+    .numbers {
       display: flex;
       justify-content: center;
       align-items: center;
-      flex-direction: column;
+      height: 2rem;
+      width: 2rem;
+      border-radius: 50%;
+      padding: 2.5rem;
+      font-family: "poppins", sans-serif;
+      font-size: 1.6rem;
+      color: #fff;
+    }
+
+    .numbers.ig-one {
+      background-color: #1976d2;
+    }
+
+    .numbers.ig-two {
+      background-color: #777777;
+    }
+
+    h2 {
+      font-family: "poppins", sans-serif;
+      font-size: 1.3rem;
+    }
+
+    #line-ig {
+      width: 15rem;
+      border: solid 0.1rem #777777;
     }
   }
 
   form {
+    height: auto;
+    width: 30rem;
+    box-shadow: 0.8rem 0.8rem 0.5rem 0.8rem #bdbdbdbf;
+    border-radius: 3rem;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     gap: 1rem;
+    background-color: #ffffff;
+    font-family: "Poppins", sans-serif;
+    padding: 3rem;
 
-    .inputs {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 0.5rem;
-
-      #date {
-        height: 2.5rem;
-        width: 15rem;
-      }
-
-      #name {
-        height: 2.5rem;
-        width: 25rem;
-      }
-
-      #direction {
-        height: 10rem;
-        width: 25rem;
-        resize: vertical;
-      }
+    h1 {
+      font-size: 2.2rem;
     }
 
-    .inputs.date {
-      padding-right: 8.5rem;
+    #date {
+      height: 2.5rem;
+      width: 21.2rem;
     }
 
-    .inputs.name {
-      padding-right: 3.6rem;
+    #name {
+      height: 2.5rem;
+      width: 21.2rem;
     }
 
-    .inputs.direction {
-      align-items: start;
+    #direction {
+      width: 24rem;
+      border: solid 0.1rem #0000003b;
+      border-radius: 0.4rem;
+      resize: none;
+      padding: 1.5rem;
     }
 
-    #button {
-      cursor: pointer;
+    p {
+      margin-right: 10.5rem;
+      color: red;
+      font-size: 1.1rem;
     }
   }
-}
-
-input {
-  padding: 0.3rem;
-  border: solid 0.1rem;
-  border-color: black;
-}
-
-textarea {
-  padding: 0.3rem;
-  border: solid 0.1rem;
-  border-color: black;
 }

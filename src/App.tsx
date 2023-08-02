@@ -1,9 +1,14 @@
 import "./styles/App.scss";
+import { Button, TextField } from "@mui/material";
+import TextareaAutosize from "@mui/base/TextareaAutosize";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useOrderStore } from "./stores";
 
 export default function App() {
   const navigate = useNavigate();
+  const { updateOrder } = useOrderStore();
+  const randomUUID = () => crypto.randomUUID();
 
   const {
     register,
@@ -11,62 +16,67 @@ export default function App() {
     handleSubmit,
   } = useForm();
 
-  const onSubmit = () => {
+  const onSubmit = (data: any) => {
+    updateOrder({
+      id: randomUUID(),
+      date: data.date,
+      address: data.address,
+      client: data.name,
+    });
+
     navigate("/productos");
   };
 
   return (
     <>
       <main className="main orden-de-compra">
-        <h1>Orden de compra</h1>
-        <section id="status">
-          <div id="general">
-            <p>1</p>
-            <p>Información General</p>
+        <section id="ig-status">
+          <div className="status ig">
+            <div className="numbers ig-one">1</div>
+            <h2>Información general</h2>
           </div>
-          <div id="articles">
-            <p>2</p>
-            <p>Productos</p>
+          <div id="line-ig"></div>
+          <div className="status ig">
+            <div className="numbers ig-two">2</div>
+            <h2>Productos</h2>
           </div>
         </section>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="inputs date">
-            <label htmlFor="date">Fecha:</label>
-            <input
-              type="datetime-local"
-              {...register("date", {
-                required: true,
-              })}
-              id="date"
-            />
-          </div>
-          {errors.date?.type === "required" && <p>El campo es requerido.</p>}
-          <div className="inputs name">
-            <label htmlFor="name">Nombre del cliente</label>
-            <input
-              type="text"
-              {...register("name", {
-                required: true,
-                maxLength: 40,
-              })}
-              id="name"
-            />
-          </div>
-          {errors.name?.type === "required" && <p>El campo es requerido.</p>}
-          <div className="inputs direction">
-            <label htmlFor="direction">Dirección:</label>
-            <textarea
-              {...register("direction", {
-                required: true,
-                maxLength: 300,
-              })}
-              id="direction"
-            />
-          </div>
+          <h1>Orden de compra</h1>
+          <TextField
+            type="datetime-local"
+            {...register("date", {
+              required: "Is required",
+            })}
+            id="date"
+          />
+          {errors.date?.type === "required" && <p>Es obligatorio el campo.</p>}
+          <TextField
+            label="Nombre del cliente"
+            type="text"
+            {...register("name", {
+              required: true,
+              maxLength: 40,
+            })}
+            id="name"
+          />
+          {errors.name?.type === "required" && <p>Es obligatorio el campo.</p>}
+          <TextareaAutosize
+            placeholder="Dirección"
+            {...register("address", {
+              required: true,
+              maxLength: 300,
+            })}
+            maxRows={30}
+            cols={50}
+            id="direction"
+          />
           {errors.direction?.type === "required" && (
-            <p>El campo es requerido.</p>
+            <p>Es obligatorio el campo.</p>
           )}
-          <input type="submit" id="button" value="Siguiente" />
+          <Button fullWidth type="submit" variant="contained" color="primary">
+            Siguiente
+          </Button>
         </form>
       </main>
     </>
